@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grub n Snack - Rider Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'deep-orange': '#FF5A1F',
+                        'deep-blue': '#1E3A8A',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .map-placeholder {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjVmNWY1Ii8+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWVlIiBzdHJva2Utd2lkdGg9IjEiPjxwYXRoIGQ9Ik0wIDBoMTAwdjEwMEgweiIvPjxwYXRoIGQ9Ik0wIDIwaDEwMCIvPjxwYXRoIGQ9Ik0wIDQwaDEwMCIvPjxwYXRoIGQ9Ik0wIDYwaDEwMCIvPjxwYXRoIGQ9Ik0wIDgwaDEwMCIvPjxwYXRoIGQ9Ik0yMCAwdjEwMCIvPjxwYXRoIGQ9Ik00MCAwdjEwMCIvPjxwYXRoIGQ9Ikg2MCAwdjEwMCIvPjxwYXRoIGQ9Ikg4MCAwdjEwMCIvPjwvZz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1IiBmaWxsPSIjRkY1QTFGIiBzdHJva2U9IiNGRjVBMDIiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik00NSA1MGgxMHYxMEg0NXoiIGZpbGw9IiNGRjVBMDIiLz48L3N2Zz4=');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Mobile Menu Button -->
+    <div class="md:hidden fixed top-4 left-4 z-50">
+        <button id="menuToggle" class="bg-white p-2 rounded shadow">
+            <i class="fas fa-bars text-deep-blue"></i>
+        </button>
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed h-full w-64 bg-deep-blue text-white p-4 shadow-lg z-40">
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-xl font-bold">Grub n Snack</h1>
+            <span class="text-xs bg-deep-orange px-2 py-1 rounded">Rider Panel</span>
+        </div>
+        
+        <div class="flex items-center mb-8">
+            <img src="https://ui-avatars.com/api/?name=John+Doe&background=FF5A1F&color=fff" alt="Profile" class="w-12 h-12 rounded-full mr-3">
+            <div>
+                <p class="font-semibold">John Doe</p>
+                <div class="flex items-center">
+                    <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
+                    <span class="text-xs">Online</span>
+                </div>
+            </div>
+        </div>
+        
+        <nav>
+            <ul>
+                <li class="mb-2">
+                    <a href="#dashboard" class="flex items-center p-2 rounded hover:bg-blue-900">
+                        <i class="fas fa-tachometer-alt mr-3"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#active-deliveries" class="flex items-center p-2 rounded hover:bg-blue-900">
+                        <i class="fas fa-bicycle mr-3"></i>
+                        Active Deliveries
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#completed-deliveries" class="flex items-center p-2 rounded hover:bg-blue-900">
+                        <i class="fas fa-check-circle mr-3"></i>
+                        Completed Deliveries
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#earnings" class="flex items-center p-2 rounded hover:bg-blue-900">
+                        <i class="fas fa-money-bill-wave mr-3"></i>
+                        Earnings & Payouts
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#support" class="flex items-center p-2 rounded hover:bg-blue-900">
+                        <i class="fas fa-headset mr-3"></i>
+                        Support & Notifications
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#profile" class="flex items-center p-2 rounded hover:bg-blue-900">
+                        <i class="fas fa-user-cog mr-3"></i>
+                        Profile & Settings
+                    </a>
+                </li>
+                <li class="mt-8">
+                    <a href="#" class="flex items-center p-2 rounded hover:bg-blue-900 text-red-300">
+                        <i class="fas fa-sign-out-alt mr-3"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="md:ml-64 min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow p-4">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-deep-blue">Dashboard</h2>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <span class="mr-2">Online</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-deep-orange"></div>
+                        </label>
+                    </div>
+                    <div class="relative">
+                        <button id="notifBtn" class="text-gray-600 hover:text-deep-orange">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute top-0 right-0 w-2 h-2 bg-deep-orange rounded-full"></span>
+                        </button>
+                        <div id="notifDropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded shadow-lg z-10">
+                            <div class="p-4 border-b">
+                                <h3 class="font-bold">Notifications (3)</h3>
+                            </div>
+                            <div class="max-h-60 overflow-y-auto">
+                                <a href="#" class="block p-3 hover:bg-gray-100 border-b">
+                                    <p class="text-sm">New delivery request from Kwa Mathe</p>
+                                    <span class="text-xs text-gray-500">2 min ago</span>
+                                </a>
+                                <a href="#" class="block p-3 hover:bg-gray-100 border-b">
+                                    <p class="text-sm">Earnings for yesterday: KES 1,250</p>
+                                    <span class="text-xs text-gray-500">1 hour ago</span>
+                                </a>
+                                <a href="#" class="block p-3 hover:bg-gray-100">
+                                    <p class="text-sm">Route update for your current delivery</p>
+                                    <span class="text-xs text-gray-500">3 hours ago</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="p-4">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-deep-orange">
+                        <div class="flex justify-between">
+                            <div>
+                                <p class="text-gray-500">Active Deliveries</p>
+                                <h3 class="text-2xl font-bold">3</h3>
+                            </div>
+                            <div class="text-deep-orange">
+                                <i class="fas fa-bicycle text-3xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+                        <div class="flex justify-between">
+                            <div>
+                                <p class="text-gray-500">Completed Today</p>
+                                <h3 class="text-2xl font-bold">8</h3>
+                            </div>
+                            <div class="text-green-500">
+                                <i class="fas fa-check-circle text-3xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+                        <div class="flex justify-between">
+                            <div>
+                                <p class="text-gray-500">Today's Earnings</p>
+                                <h3 class="text-2xl font-bold">KES 1,850</h3>
+                            </div>
+                            <div class="text-blue-500">
+                                <i class="fas fa-money-bill-wave text-3xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+                        <div class="flex justify-between">
+                            <div>
+                                <p class="text-gray-500">Orders This Week</p>
+                                <h3 class="text-2xl font-bold">42</h3>
+                            </div>
+                            <div class="text-purple-500">
+                                <i class="fas fa-box-open text-3xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-white rounded-lg shadow p-4 lg:col-span-2">
+                        <h3 class="font-bold mb-4">Quick Actions</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <button class="bg-deep-orange text-white py-3 px-4 rounded-lg flex items-center justify-center hover:bg-orange-600 transition">
+                                <i class="fas fa-plus-circle mr-2"></i>
+                                Start New Delivery
+                            </button>
+                            <button class="bg-deep-blue text-white py-3 px-4 rounded-lg flex items-center justify-center hover:bg-blue-900 transition">
+                                <i class="fas fa-route mr-2"></i>
+                                View My Route
+                            </button>
+                            <button class="bg-gray-200 text-gray-800 py-3 px-4 rounded-lg flex items-center justify-center hover:bg-gray-300 transition">
+                                <i class="fas fa-headset mr-2"></i>
+                                Contact Support
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h3 class="font-bold mb-4">Recent Activity</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <div class="bg-green-100 p-2 rounded-full mr-3">
+                                    <i class="fas fa-check text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm">Delivered order #GN4587 to Rongai</p>
+                                    <p class="text-xs text-gray-500">KES 250 • 12:45 PM</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                    <i class="fas fa-bicycle text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm">Picked up from Kwa Mathe</p>
+                                    <p class="text-xs text-gray-500">Order #GN4588 • 12:30 PM</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-orange-100 p-2 rounded-full mr-3">
+                                    <i class="fas fa-bell text-deep-orange"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm">New delivery assigned</p>
+                                    <p class="text-xs text-gray-500">From Onnaires to Ngong • 12:15 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-4 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold">Current Deliveries</h3>
+                        <a href="#active-deliveries" class="text-deep-blue text-sm">View All</a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendor</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pickup</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Drop-off</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Distance</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">#GN4588</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Kwa Mathe</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Rongai Market</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Rongai, Kware</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">2.4 km</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                        <button class="text-deep-orange hover:text-orange-700 mr-2">
+                                            <i class="fas fa-check-circle"></i> Mark as Picked
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">#GN4589</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Onnaires</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Ngong Town</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Ngong Hills</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">3.1 km</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                        <button class="text-gray-500 hover:text-gray-700 mr-2">
+                                            <i class="fas fa-phone"></i> Contact
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">#GN4590</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Papa's Place</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Kisumu CBD</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Kisumu, Milimani</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">1.8 km</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                        <button class="text-gray-500 hover:text-gray-700 mr-2">
+                                            <i class="fas fa-phone"></i> Contact
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Deliveries Page -->
+            <div id="active-deliveries" class="page hidden">
+                <div class="bg-white rounded-lg shadow p-4 mb-6">
+                    <h2 class="text-xl font-bold mb-4">Active Deliveries</h2>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendor</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pickup</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Drop-off</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Distance</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">#GN4588</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Kwa Mathe</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Rongai Market</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Rongai, Kware</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">2.4 km (≈12 min)</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-deep-orange hover:text-orange-700 mr-2">
+                                                    <i class="fas fa-check-circle"></i> Picked
+                                                </button>
+                                                <button class="text-gray-500 hover:text-gray-700">
+                                                    <i class="fas fa-phone"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">#GN4589</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Onnaires</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Ngong Town</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Ngong Hills</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">3.1 km (≈15 min)</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-deep-orange hover:text-orange-700 mr-2">
+                                                    <i class="fas fa-check-circle"></i> Picked
+                                                </button>
+                                                <button class="text-gray-500 hover:text-gray-700">
+                                                    <i class="fas fa-phone"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">#GN4590</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Papa's Place</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Kisumu CBD</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Kisumu, Milimani</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">1.8 km (≈9 min)</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-deep-orange hover:text-orange-700 mr-2">
+                                                    <i class="fas fa-check-circle"></i> Picked
+                                                </button>
+                                                <button class="text-gray-500 hover:text-gray-700">
+                                                    <i class="fas fa-phone"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="h-64 md:h-96 bg-gray-100 rounded-lg map-placeholder flex items-center justify-center">
+                                <div class="text-center p-4 bg-white bg-opacity-90 rounded-lg shadow">
+                                    <i class="fas fa-map-marked-alt text-3xl text-deep-blue mb-2"></i>
+                                    <p class="font-semibold">Delivery Route Map</p>
+                                    <p class="text-sm text-gray-600">Optimized for bicycle</p>
+                                    <button class="mt-2 bg-deep-blue text-white px-4 py-1 rounded text-sm">
+                                        View Full Map
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mt-4 bg-white p-4 rounded-lg shadow">
+                                <h4 class="font-bold mb-2">Delivery Instructions</h4>
+                                <p class="text-sm mb-2"><span class="font-semibold">#GN4588:</span> Call customer when 5 min away</p>
+                                <p class="text-sm mb-2"><span class="font-semibold">#GN4589:</span> No onions in the order</p>
+                                <p class="text-sm"><span class="font-semibold">#GN4590:</span> Collect payment on delivery (KES 650)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Deliveries Page -->
+            <div id="completed-deliveries" class="page hidden">
+                <div class="bg-white rounded-lg shadow p-4 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold">Completed Deliveries</h2>
+                        <div class="flex space-x-2">
+                            <select class="border rounded px-3 py-1 text-sm">
+                                <option>Today</option>
+                                <option>This Week</option>
+                                <option>This Month</option>
+                            </select>
+                            <button class="bg-deep-blue text-white px-3 py-1 rounded text-sm flex items-center">
+                                <i class="fas fa-download mr-1"></i> CSV
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendor</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Distance</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Earnings</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">#GN4587</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Kwa Mathe</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">James M.</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">2.1 km</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">11 min</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-green-600">KES 250</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">#GN4586</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Onnaires</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Sarah K.</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">3.5 km</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">18 min</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-green-600">KES 320</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">#GN4585</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Papa's Place</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">David O.</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">1.6 km</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">8 min</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-green-600">KES 200</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">#GN4584</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Kwa Mathe</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Grace W.</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">2.8 km</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">14 min</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-green-600">KES 280</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">#GN4583</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Onnaires</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Peter N.</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">3.2 km</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">16 min</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-green-600">KES 300</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                            Showing 1 to 5 of 28 deliveries
+                        </div>
+                        <div class="flex space-x-1">
+                            <button class="px-3 py-1 border rounded text-sm">&laquo;</button>
+                            <button class="px-3 py-1 border rounded bg-deep-blue text-white text-sm">1</button>
+                            <button class="px-3 py-1 border rounded text-sm">2</button>
+                            <button class="px-3 py-1 border rounded text-sm">3</button>
+                            <button class="px-3 py-1 border rounded text-sm">&raquo;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings & Payouts Page -->
+            <div id="earnings" class="page hidden">
+                <div class="bg-white rounded-lg shadow p-4 mb-6">
+                    <h2 class="text-xl font-bold mb-4">Earnings & Payouts</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-gray-50 p-4 rounded-lg border">
+                            <p class="text-gray-500 text-sm">Total Earnings</p>
+                            <h3 class="text-2xl font-bold">KES 12,450</h3>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg border">
+                            <p class="text-gray-500 text-sm">Available Balance</p>
+                            <h3 class="text-2xl font-bold">KES 8,200</h3>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg border">
+                            <p class="text-gray-500 text-sm">Last Payout</p>
+                            <h3 class="text-2xl font-bold">KES 4,250</h3>
+                            <p class="text-xs text-gray-500">15 May 2023</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex border-b">
+                            <button class="px-4 py-2 font-medium border-b-2 border-deep-orange text-deep-orange">Today</button>
+                            <button class="px-4 py-2 font-medium text-gray-500">This Week</button>
+                            <button class="px-4 py-2 font-medium text-gray-500">This Month</button>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <div class="h-64 bg-gray-100 rounded flex items-center justify-center">
+                                <p class="text-gray-500">Earnings chart visualization</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-bold mb-3">Earnings Breakdown</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <span>Delivery Fees</span>
+                                    <span class="font-medium">KES 1,650</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Tips</span>
+                                    <span class="font-medium">KES 200</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Bonuses</span>
+                                    <span class="font-medium">KES 0</span>
+                                </div>
+                                <div class="border-t pt-2 flex justify-between font-bold">
+                                    <span>Total</span>
+                                    <span>KES 1,850</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-deep-blue text-white p-4 rounded-lg">
+                            <h3 class="font-bold mb-3">Request Payout</h3>
+                            <p class="text-sm mb-4">Available balance: KES 8,200</p>
+                            <div class="mb-3">
+                                <label class="block text-sm mb-1">Amount (KES)</label>
+                                <input type="number" class="w-full p-2 rounded text-black" value="8200">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm mb-1">Payment Method</label>
+                                <select class="w-full p-2 rounded text-black">
+                                    <option>M-Pesa</option>
+                                    <option>Airtel Money</option>
+                                    <option>Bank Transfer</option>
+                                </select>
+                            </div>
+                            <button class="w-full bg-deep-orange hover:bg-orange-600 py-2 rounded font-medium">
+                                Request Payout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support & Notifications Page -->
+            <div id="support" class="page hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-lg shadow p-4 mb-6">
+                            <h2 class="text-xl font-bold mb-4">Notifications</h2>
+                            
+                            <div class="space-y-3">
+                                <div class="flex p-3 bg-blue-50 rounded-lg">
+                                    <div class="mr-3 text-blue-500">
+                                        <i class="fas fa-bicycle"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">New delivery request</p>
+                                        <p class="text-sm text-gray-600">From Kwa Mathe to Rongai, 2.4 km</p>
+                                        <p class="text-xs text-gray-500">10 minutes ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex p-3 bg-green-50 rounded-lg">
+                                    <div class="mr-3 text-green-500">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Delivery completed</p>
+                                        <p class="text-sm text-gray-600">Order #GN4587 - KES 250 earned</p>
+                                        <p class="text-xs text-gray-500">1 hour ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex p-3 bg-yellow-50 rounded-lg">
+                                    <div class="mr-3 text-yellow-500">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Route change alert</p>
+                                        <p class="text-sm text-gray-600">Ngong Road has traffic, use alternative route</p>
+                                        <p class="text-xs text-gray-500">3 hours ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex p-3 bg-purple-50 rounded-lg">
+                                    <div class="mr-3 text-purple-500">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Payout processed</p>
+                                        <p class="text-sm text-gray-600">KES 4,250 sent to your M-Pesa</p>
+                                        <p class="text-xs text-gray-500">2 days ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="mt-4 text-deep-blue text-sm font-medium">
+                                View All Notifications
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="bg-white rounded-lg shadow p-4 mb-6">
+                            <h2 class="text-xl font-bold mb-4">Support Center</h2>
+                            
+                            <div class="space-y-3">
+                                <button class="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                                    <span>
+                                        <i class="fas fa-comment-dots text-deep-blue mr-2"></i>
+                                        Live Chat
+                                    </span>
+                                    <i class="fas fa-chevron-right text-gray-400"></i>
+                                </button>
+                                <button class="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                                    <span>
+                                        <i class="fas fa-phone-alt text-deep-blue mr-2"></i>
+                                        Call Support
+                                    </span>
+                                    <i class="fas fa-chevron-right text-gray-400"></i>
+                                </button>
+                                <button class="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                                    <span>
+                                        <i class="fab fa-whatsapp text-deep-blue mr-2"></i>
+                                        WhatsApp
+                                    </span>
+                                    <i class="fas fa-chevron-right text-gray-400"></i>
+                                </button>
+                            </div>
+                            
+                            <h3 class="font-bold mt-6 mb-3">FAQs for Bicycle Riders</h3>
+                            <div class="space-y-2">
+                                <div class="border-b pb-2">
+                                    <p class="font-medium">What to do when customer is unreachable?</p>
+                                    <p class="text-sm text-gray-600">Wait for 5 minutes, then contact support...</p>
+                                </div>
+                                <div class="border-b pb-2">
+                                    <p class="font-medium">How to handle cash payments?</p>
+                                    <p class="text-sm text-gray-600">Verify amount before handing over food...</p>
+                                </div>
+                                <div class="border-b pb-2">
+                                    <p class="font-medium">Bicycle maintenance tips</p>
+                                    <p class="text-sm text-gray-600">Check tires daily, lubricate chain weekly...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile & Settings Page -->
+            <div id="profile" class="page hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-lg shadow p-4 mb-6">
+                            <h2 class="text-xl font-bold mb-4">Profile Information</h2>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                    <input type="text" value="John Doe" class="w-full p-2 border rounded">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                                    <input type="tel" value="+254712345678" class="w-full p-2 border rounded">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Bicycle Details</label>
+                                <input type="text" placeholder="Bicycle type/plate number" class="w-full p-2 border rounded">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Profile Photo</label>
+                                <div class="flex items-center">
+                                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=FF5A1F&color=fff" alt="Profile" class="w-16 h-16 rounded-full mr-3">
+                                    <button class="text-deep-blue text-sm font-medium">
+                                        Upload New Photo
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">ID/License Upload</label>
+                                <div class="border-2 border-dashed border-gray-300 rounded p-4 text-center">
+                                    <i class="fas fa-cloud-upload-alt text-gray-400 text-2xl mb-2"></i>
+                                    <p class="text-sm text-gray-600">Drag & drop files here or click to browse</p>
+                                    <p class="text-xs text-gray-500">Max file size: 2MB</p>
+                                </div>
+                            </div>
+                            
+                            <button class="bg-deep-blue text-white px-4 py-2 rounded font-medium">
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="bg-white rounded-lg shadow p-4 mb-6">
+                            <h2 class="text-xl font-bold mb-4">Change Password</h2>
+                            
+                            <div class="mb-3">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+                                <input type="password" class="w-full p-2 border rounded">
+                            </div>
+                            <div class="mb-3">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                                <input type="password" class="w-full p-2 border rounded">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                                <input type="password" class="w-full p-2 border rounded">
+                            </div>
+                            
+                            <button class="w-full bg-deep-orange hover:bg-orange-600 text-white py-2 rounded font-medium">
+                                Update Password
+                            </button>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow p-4">
+                            <h2 class="text-xl font-bold mb-4">Account Settings</h2>
+                            
+                            <div class="flex items-center justify-between mb-3">
+                                <div>
+                                    <p class="font-medium">Email Notifications</p>
+                                    <p class="text-sm text-gray-600">Get updates via email</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" value="" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-deep-orange"></div>
+                                </label>
+                            </div>
+                            
+                            <div class="flex items-center justify-between mb-3">
+                                <div>
+                                    <p class="font-medium">SMS Alerts</p>
+                                    <p class="text-sm text-gray-600">Get urgent updates via SMS</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" value="" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-deep-orange"></div>
+                                </label>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium">App Sounds</p>
+                                    <p class="text-sm text-gray-600">Play sounds for new orders</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" value="" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-deep-orange"></div>
+                                </label>
+                            </div>
+                            
+                            <button class="mt-6 w-full border border-red-500 text-red-500 py-2 rounded font-medium hover:bg-red-50">
+                                Delete Account
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+
+        // Notification dropdown toggle
+        document.getElementById('notifBtn').addEventListener('click', function() {
+            document.getElementById('notifDropdown').classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('#notifBtn') && !event.target.closest('#notifDropdown')) {
+                document.getElementById('notifDropdown').classList.add('hidden');
+            }
+        });
+
+        // Simple page navigation
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.add('hidden');
+                });
+                
+                // Show target page
+                document.getElementById(targetId).classList.remove('hidden');
+                
+                // Update header title
+                document.querySelector('header h2').textContent = this.textContent.trim();
+                
+                // Close mobile menu if open
+                if (window.innerWidth < 768) {
+                    document.getElementById('sidebar').classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
